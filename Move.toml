@@ -1,0 +1,16 @@
+[package]
+name = "playgrouund"
+version = "1.0.0"
+authors = []
+
+[addresses]
+playgrouund_addr = "_"
+
+[dev-addresses]
+playgrouund_addr = "0x999"
+
+[dependencies]
+AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "main", subdir = "aptos-move/framework/aptos-framework"}
+AptosTokenObjects = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "main", subdir = "aptos-move/framework/aptos-token-objects"}
+
+[dev-dependencies]
