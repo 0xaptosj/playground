@@ -1,6 +1,5 @@
 module playgrouund_addr::nft_playground {
     use std::option;
-    use std::option::Option;
     use std::signer;
     use std::string;
     use aptos_framework::object;
@@ -89,7 +88,7 @@ module playgrouund_addr::nft_playground {
     }
 
     #[view]
-    public fun get_collection_royalty(collection_addr: address): (Option<u64>, Option<u64>, Option<address>) {
+    public fun get_collection_royalty(collection_addr: address): (option::Option<u64>, option::Option<u64>, option::Option<address>) {
         let collection_obj = object::address_to_object<collection::Collection>(collection_addr);
         let maybe_royalty = royalty::get(collection_obj);
         if (option::is_none(&maybe_royalty)) {
@@ -104,7 +103,7 @@ module playgrouund_addr::nft_playground {
     }
 
     #[view]
-    public fun get_token_royalty(token_addr: address): (Option<u64>, Option<u64>, Option<address>) {
+    public fun get_token_royalty(token_addr: address): (option::Option<u64>, option::Option<u64>, option::Option<address>) {
         let token_obj = object::address_to_object<token::Token>(token_addr);
         let maybe_royalty = royalty::get(token_obj);
         if (option::is_none(&maybe_royalty)) {
@@ -115,6 +114,23 @@ module playgrouund_addr::nft_playground {
             let denominator = royalty::denominator(&royalty);
             let payee_address = royalty::payee_address(&royalty);
             (option::some(numerator), option::some(denominator), option::some(payee_address))
+        }
+    }
+
+    #[view]
+    public fun get_token_royalty2(token_addr: address): (option::Option<royalty::Royalty>) {
+        let token_obj = object::address_to_object<token::Token>(token_addr);
+        let maybe_royalty = royalty::get(token_obj);
+        if (option::is_none(&maybe_royalty)) {
+            // (option::none(), option::none(), option::none())
+            (option::none())
+        } else {
+            let royalty = option::extract(&mut maybe_royalty);
+            // let numerator = royalty::numerator(&royalty);
+            // let denominator = royalty::denominator(&royalty);
+            // let payee_address = royalty::payee_address(&royalty);
+            // (option::some(numerator), option::some(denominator), option::some(payee_address))
+            (option::some(royalty))
         }
     }
 
