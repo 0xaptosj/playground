@@ -1,13 +1,4 @@
-module playgrouund_addr::managed_fungible_asset {
-/// This module provides a managed fungible asset that allows the owner of the metadata object to
-/// mint, transfer and burn fungible assets.
-///
-/// The functionalities offered by this module are:
-/// 1. Mint fungible assets to fungible stores as the owner of metadata object.
-/// 2. Transfer fungible assets as the owner of metadata object ignoring `frozen` field between fungible stores.
-/// 3. Burn fungible assets from fungible stores as the owner of metadata object.
-/// 4. Withdraw the merged fungible assets from fungible stores as the owner of metadata object.
-/// 5. Deposit fungible assets to fungible stores.
+module playground_addr::managed_fungible_asset {
     use aptos_framework::fungible_asset::{Self, MintRef, TransferRef, BurnRef, Metadata, FungibleStore, FungibleAsset};
     use aptos_framework::object::{Self, Object, ConstructorRef};
     use aptos_framework::primary_fungible_store;
@@ -361,7 +352,7 @@ module playgrouund_addr::managed_fungible_asset {
         object_from_constructor_ref<Metadata>(constructor_ref)
     }
 
-    #[test(creator = @playgrouund_addr)]
+    #[test(creator = @playground_addr)]
     fun test_basic_flow(
         creator: &signer,
     ) acquires ManagingRefs {
@@ -406,7 +397,7 @@ module playgrouund_addr::managed_fungible_asset {
         assert!(primary_fungible_store::balance(aaron_address, metadata) == 0, 11);
     }
 
-    #[test(creator = @playgrouund_addr, aaron = @0xface)]
+    #[test(creator = @playground_addr, aaron = @0xface)]
     #[expected_failure(abort_code = 0x50001, location = Self)]
     fun test_permission_denied(
         creator: &signer,

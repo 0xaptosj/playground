@@ -1,4 +1,4 @@
-module playgrouund_addr::coin_playground {
+module playground_addr::coin_playground {
     use std::string;
     use aptos_framework::account;
     use aptos_framework::coin;
@@ -31,7 +31,7 @@ module playgrouund_addr::coin_playground {
         );
     }
 
-    // #[test(sender = @playgrouund_addr, user1 = @0x100, user2 = @0x101)]
+    // #[test(sender = @playground_addr, user1 = @0x100, user2 = @0x101)]
     // fun test_happy_path(sender: &signer, user1: &signer, user2: &signer) {
     //     create_coin(user1);
     // }

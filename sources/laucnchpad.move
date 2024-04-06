@@ -1,9 +1,9 @@
-module playgrouund_addr::laucnchpad {
+module playground_addr::laucnchpad {
     use std::bcs::to_bytes;
     use aptos_framework::object;
     use aptos_framework::fungible_asset::{Self, Metadata, FungibleAsset};
     use aptos_framework::object::Object;
-    use playgrouund_addr::managed_fungible_asset;
+    use playground_addr::managed_fungible_asset;
     use std::string::utf8;
     use aptos_std::string_utils;
 
@@ -18,7 +18,7 @@ module playgrouund_addr::laucnchpad {
     }
 
     public entry fun create_fa(sender: &signer) acquires Counter {
-        let counter = borrow_global_mut<Counter>(@playgrouund_addr);
+        let counter = borrow_global_mut<Counter>(@playground_addr);
         let symbol = to_bytes(&string_utils::format2(&b"{}_{}", ASSET_SYMBOL, counter.count));
         let constructor_ref = &object::create_named_object(sender, symbol);
         managed_fungible_asset::initialize(
@@ -38,7 +38,7 @@ module playgrouund_addr::laucnchpad {
     /// Return the address of the metadata that's created when this module is deployed.
     public fun get_metadata(counter: u64): Object<Metadata> {
         let symbol = to_bytes(&string_utils::format2(&b"{}_{}", ASSET_SYMBOL, counter));
-        let metadata_address = object::create_object_address(&@playgrouund_addr, symbol);
+        let metadata_address = object::create_object_address(&@playground_addr, symbol);
         object::address_to_object<Metadata>(metadata_address)
     }
 
@@ -95,10 +95,10 @@ module playgrouund_addr::laucnchpad {
     #[test_only]
     use std::signer;
 
-    #[test(creator = @playgrouund_addr)]
+    #[test(creator = @playground_addr)]
     fun test_basic_flow(creator: &signer) acquires Counter {
         init_module(creator);
-        // let counter = borrow_global<Counter>(@playgrouund_addr);
+        // let counter = borrow_global<Counter>(@playground_addr);
         create_fa(creator);
         let creator_address = signer::address_of(creator);
         let aaron_address = @0xface;
@@ -133,7 +133,7 @@ module playgrouund_addr::laucnchpad {
         burn(creator, 1, creator_address, 90);
     }
 
-    // #[test(creator = @playgrouund_addr, aaron = @0xface)]
+    // #[test(creator = @playground_addr, aaron = @0xface)]
     // #[expected_failure(abort_code = 0x50001, location = playground_addr::managed_fungible_asset)]
     // fun test_permission_denied(creator: &signer, aaron: &signer) acquires Counter {
     //     create_fa(creator);

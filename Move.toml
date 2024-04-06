@@ -1,13 +1,13 @@
 [package]
-name = "playgrouund"
+name = "playground"
 version = "1.0.0"
 authors = []
 
 [addresses]
-playgrouund_addr = "_"
+playground_addr = "_"
 
 [dev-addresses]
-playgrouund_addr = "0x999"
+playground_addr = "0x999"
 
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "main", subdir = "aptos-move/framework/aptos-framework"}

@@ -1,4 +1,4 @@
-module playgrouund_addr::nft_playground {
+module playground_addr::nft_playground {
     use std::option;
     use std::signer;
     use std::string;
@@ -135,15 +135,15 @@ module playgrouund_addr::nft_playground {
     }
 
     fun get_config_signer_addr(): address {
-        object::create_object_address(&@playgrouund_addr, CONFIG_OBJ_SEED)
+        object::create_object_address(&@playground_addr, CONFIG_OBJ_SEED)
     }
 
     fun get_config_signer(): signer acquires Config {
         object::generate_signer_for_extending(&borrow_global<Config>(get_config_signer_addr()).extend_ref)
     }
 
-    #[test(sender = @playgrouund_addr, user1 = @0x100, user2 = @0x101)]
-    fun test_happy_path(sender: &signer, user1: &signer, user2: &signer) acquires Config {
+    #[test(sender = @playground_addr, user1 = @0x100)]
+    fun test_happy_path(sender: &signer, user1: &signer) acquires Config {
         init_module(sender);
         let user1_addr = signer::address_of(user1);
         let collection_addr = get_collection_addr();
@@ -151,7 +151,7 @@ module playgrouund_addr::nft_playground {
         let (numerator, denominator, payee_address) = get_collection_royalty(collection_addr);
         assert!(numerator == option::some(10), 1);
         assert!(denominator == option::some(100), 1);
-        assert!(payee_address == option::some(@playgrouund_addr), 1);
+        assert!(payee_address == option::some(@playground_addr), 1);
 
         let (numerator, denominator, payee_address) = get_token_royalty(nft_addr);
         assert!(numerator == option::some(15), 1);
