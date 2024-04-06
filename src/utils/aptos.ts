@@ -1,14 +1,14 @@
 import { Aptos, AptosConfig, Network } from "@aptos-labs/ts-sdk";
 
 export const PLAYGROUND_CONTRACT_ADDRESS =
-  "0xe54401e37afa2712eec8288518b4ff0032cf82961155a603b3c91513258f6caa";
+  "0xcff52b2cca5126a222752a9d04c680b134127b59e7a8457d940163316f1b4f60";
 
 const config = new AptosConfig({
   network: Network.TESTNET,
 });
 export const aptos = new Aptos(config);
 
-const getCoinSupply = async () => {
+export const getCoinSupply = async () => {
   return aptos.view({
     payload: {
       function: "0x1::coin::supply",
@@ -20,7 +20,7 @@ const getCoinSupply = async () => {
   });
 };
 
-const getFungibleAssetObjectAddress = async () => {
+export const getFungibleAssetObjectAddress = async () => {
   return aptos.view({
     payload: {
       function: `${PLAYGROUND_CONTRACT_ADDRESS}::fungible_asset_playground::get_fa_obj_address`,
@@ -30,7 +30,7 @@ const getFungibleAssetObjectAddress = async () => {
   });
 };
 
-const getFungibleAssetSupply = async () => {
+export const getFungibleAssetSupply = async () => {
   let fungibleAssetObjectAddress = (
     await getFungibleAssetObjectAddress()
   )[0] as string;
@@ -39,6 +39,19 @@ const getFungibleAssetSupply = async () => {
       function: "0x1::fungible_asset::supply",
       typeArguments: [],
       functionArguments: [fungibleAssetObjectAddress],
+    },
+  });
+};
+
+export const bulkResolveAnsName = async () => {
+  return aptos.view({
+    payload: {
+      function: `${PLAYGROUND_CONTRACT_ADDRESS}::ans_playground::bulk_resolve_ans_name`,
+      typeArguments: [],
+      functionArguments: [
+        ["abcded", "abcded"],
+        [null, null],
+      ],
     },
   });
 };

@@ -1,9 +1,16 @@
-import { PLAYGROUND_CONTRACT_ADDRESS, aptos } from "@/utils/aptos";
+import {
+  PLAYGROUND_CONTRACT_ADDRESS,
+  aptos,
+  bulkResolveAnsName,
+} from "@/utils/aptos";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button } from "@chakra-ui/react";
 
 export const Run = () => {
   const { account, signAndSubmitTransaction } = useWallet();
+  const result = bulkResolveAnsName().then((result) => {
+    console.log(result);
+  });
 
   const onSubmit = async () => {
     if (!account) {
