@@ -4,7 +4,6 @@ module playground_addr::ans_playground {
     use std::vector;
     use router::router;
 
-
     /// Domain names and subdomain names must have same length
     const ENAME_LENGTH_NOT_THE_SAME: u64 = 1;
 
