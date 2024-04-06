@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test-move": "sh_scripts/test.sh",
-    "deploy-move": "sh_scripts/deploy.sh"
+    "deploy-move": "sh_scripts/deploy.sh",
+    "upgrade-move": "sh_scripts/upgrade.sh"
   },
   "dependencies": {
     "@aptos-labs/ts-sdk": "^1.5.1",

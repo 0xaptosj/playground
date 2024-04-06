@@ -61,7 +61,8 @@ module playground_addr::fungible_asset_playground {
         primary_fungible_store::balance(user, fa_obj)
     }
 
-    fun get_fa_obj_address(): address {
+    #[view]
+    public fun get_fa_obj_address(): address {
         object::create_object_address(&@playground_addr, FA_OBJ_SEED)
     }
 
