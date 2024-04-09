@@ -6,6 +6,8 @@ module playground_addr::playground_1 {
         bools: vector<bool>,
     }
 
+    // ================================= Entry Functions ================================= //
+
     public entry fun my_function(bools: vector<bool>) {
         event::emit(MyEvent {
             bools

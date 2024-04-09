@@ -1,4 +1,4 @@
-module playground_addr::coin_playground {
+module playground_addr::legacy_coin_playground {
     use std::option;
     use std::signer;
     use std::string;
@@ -31,12 +31,16 @@ module playground_addr::coin_playground {
         );
     }
 
+    // ================================= Entry Functions ================================= //
+
     public entry fun mint_coin(sender: &signer, amount: u64) acquires Config {
         let coin_cap = borrow_global<Config>(@playground_addr);
         let minted_coin = coin::mint(amount, &coin_cap.mint_capability);
         coin::register<TestCoin>(sender);
         coin::deposit(signer::address_of(sender), minted_coin)
     }
+
+    // ================================= View Functions ================================== //
 
     #[view]
     public fun getTotalSupply(): u128 {
@@ -52,6 +56,8 @@ module playground_addr::coin_playground {
     public fun getBalance(user: address): u64 {
         coin::balance<TestCoin>(user)
     }
+
+    // ================================= Tests ================================== //
 
     #[test_only]
     use aptos_framework::account;

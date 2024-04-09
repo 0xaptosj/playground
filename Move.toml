@@ -26,6 +26,7 @@ router = "_"
 [dependencies]
 AptosFramework = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-framework"}
 AptosTokenObjects = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-token-objects"}
+AptosToken = { git = "https://github.com/aptos-labs/aptos-core.git", rev = "mainnet", subdir = "aptos-move/framework/aptos-token"}
 router = { git = "https://github.com/aptos-labs/aptos-names-contracts.git", rev = "main", subdir = "router"}
 
 [dev-dependencies]

@@ -4,7 +4,7 @@ export const PLAYGROUND_CONTRACT_ADDRESS =
   "0xcff52b2cca5126a222752a9d04c680b134127b59e7a8457d940163316f1b4f60";
 
 const config = new AptosConfig({
-  network: Network.TESTNET,
+  network: Network.MAINNET,
 });
 export const aptos = new Aptos(config);
 
@@ -53,5 +53,25 @@ export const bulkResolveAnsName = async () => {
         [null, null],
       ],
     },
+  });
+};
+
+export const getAccountTxs = async () => {
+  return aptos
+    .getAccountTransactions({
+      accountAddress:
+        "0x30fc5066aa21bdf9d2ab60353a81601927ea2877966adea38ae821f55b976891",
+    })
+    .then((result) => {
+      return result.map((tx) => {
+        return tx.hash;
+      });
+    });
+};
+
+export const getAccountTxsCount = async () => {
+  return aptos.getAccountTransactionsCount({
+    accountAddress:
+      "0x30fc5066aa21bdf9d2ab60353a81601927ea2877966adea38ae821f55b976891",
   });
 };

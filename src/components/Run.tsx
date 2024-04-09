@@ -2,14 +2,22 @@ import {
   PLAYGROUND_CONTRACT_ADDRESS,
   aptos,
   bulkResolveAnsName,
+  getAccountTxs,
+  getAccountTxsCount,
 } from "@/utils/aptos";
 import { useWallet } from "@aptos-labs/wallet-adapter-react";
 import { Button } from "@chakra-ui/react";
 
 export const Run = () => {
   const { account, signAndSubmitTransaction } = useWallet();
-  const result = bulkResolveAnsName().then((result) => {
+  bulkResolveAnsName().then((result) => {
     console.log(result);
+  });
+  getAccountTxs().then((result) => {
+    console.log("user tx", result.length);
+  });
+  getAccountTxsCount().then((result) => {
+    console.log("user tx count", result);
   });
 
   const onSubmit = async () => {
@@ -23,6 +31,17 @@ export const Run = () => {
         typeArguments: [],
         functionArguments: [[true, true]],
       },
+      // data: {
+      //   function: "0x3::token::create_collection_script",
+      //   typeArguments: [],
+      //   functionArguments: [
+      //     "name",
+      //     "description",
+      //     "https://www.google.com",
+      //     123,
+      //     [true, true],
+      //   ],
+      // },
     });
     await aptos
       .waitForTransaction({

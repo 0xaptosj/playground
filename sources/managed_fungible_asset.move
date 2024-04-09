@@ -78,6 +78,8 @@ module playground_addr::managed_fungible_asset {
         )
     }
 
+    // ================================= Entry Functions ================================= //
+
     /// Mint as the owner of metadata object to the primary fungible stores of the accounts with amounts of FAs.
     public entry fun mint_to_primary_stores(
         admin: &signer,
@@ -91,7 +93,6 @@ module playground_addr::managed_fungible_asset {
         );
         mint(admin, asset, receiver_primary_stores, amounts);
     }
-
 
     /// Mint as the owner of metadata object to multiple fungible stores with amounts of FAs.
     public entry fun mint(
@@ -185,7 +186,6 @@ module playground_addr::managed_fungible_asset {
         };
     }
 
-
     /// Freeze/unfreeze the primary stores of accounts so they cannot transfer or receive fungible assets.
     public entry fun set_primary_stores_frozen_status(
         admin: &signer,
@@ -211,6 +211,8 @@ module playground_addr::managed_fungible_asset {
             fungible_asset::set_frozen_flag(transfer_ref, store, frozen);
         });
     }
+
+    // ================================= Helpers ================================== //
 
     /// Withdraw as the owner of metadata object ignoring `frozen` field from primary fungible stores of accounts.
     public fun withdraw_from_primary_stores(
@@ -328,6 +330,8 @@ module playground_addr::managed_fungible_asset {
         assert!(option::is_some(&refs.mint_ref), error::not_found(ERR_BURN_REF));
         option::borrow(&refs.burn_ref)
     }
+
+    // ================================= Tests ================================== //
 
     #[test_only]
     use aptos_framework::object::object_from_constructor_ref;

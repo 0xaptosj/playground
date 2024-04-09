@@ -17,6 +17,8 @@ module playground_addr::laucnchpad {
         move_to(sender, Counter { count: 0 })
     }
 
+    // ================================= Entry Functions ================================= //
+
     public entry fun create_fa(sender: &signer) acquires Counter {
         let counter = borrow_global_mut<Counter>(@playground_addr);
         let symbol = to_bytes(&string_utils::format2(&b"{}_{}", ASSET_SYMBOL, counter.count));
@@ -32,14 +34,6 @@ module playground_addr::laucnchpad {
             vector[true, true, true], /* mint_ref, transfer_ref, burn_ref */
         );
         counter.count = counter.count + 1;
-    }
-
-    #[view]
-    /// Return the address of the metadata that's created when this module is deployed.
-    public fun get_metadata(counter: u64): Object<Metadata> {
-        let symbol = to_bytes(&string_utils::format2(&b"{}_{}", ASSET_SYMBOL, counter));
-        let metadata_address = object::create_object_address(&@playground_addr, symbol);
-        object::address_to_object<Metadata>(metadata_address)
     }
 
     /// Mint as the owner of metadata object.
@@ -73,6 +67,18 @@ module playground_addr::laucnchpad {
         managed_fungible_asset::set_primary_stores_frozen_status(admin, get_metadata(counter), vector[account], false);
     }
 
+    // ================================= View Functions ================================== //
+
+    #[view]
+    /// Return the address of the metadata that's created when this module is deployed.
+    public fun get_metadata(counter: u64): Object<Metadata> {
+        let symbol = to_bytes(&string_utils::format2(&b"{}_{}", ASSET_SYMBOL, counter));
+        let metadata_address = object::create_object_address(&@playground_addr, symbol);
+        object::address_to_object<Metadata>(metadata_address)
+    }
+
+    // ================================= Helpers ================================== //
+
     /// Withdraw as the owner of metadata object ignoring `frozen` field.
     public fun withdraw(admin: &signer, counter: u64,from: address, amount: u64): FungibleAsset {
         managed_fungible_asset::withdraw_from_primary_stores(admin, get_metadata(counter), vector[from], vector[amount])
@@ -89,6 +95,8 @@ module playground_addr::laucnchpad {
         );
         fungible_asset::destroy_zero(fa);
     }
+
+    // ================================= Tests ================================== //
 
     #[test_only]
     use aptos_framework::primary_fungible_store;

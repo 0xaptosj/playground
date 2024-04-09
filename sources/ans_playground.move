@@ -7,6 +7,8 @@ module playground_addr::ans_playground {
     /// Domain names and subdomain names must have same length
     const ENAME_LENGTH_NOT_THE_SAME: u64 = 1;
 
+    // ================================= View Functions ================================== //
+
     #[view]
     public fun bulk_resolve_ans_name(
         domain_names: vector<string::String>,

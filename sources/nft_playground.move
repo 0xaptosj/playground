@@ -42,34 +42,10 @@ module playground_addr::nft_playground {
         );
     }
 
+    // ================================= Entry Functions ================================= //
+
     public entry fun mint(sender: &signer) acquires Config {
         let _nft_address = mint_inner(sender);
-    }
-
-    fun mint_inner(sender: &signer): address acquires Config {
-        let sender_addr = signer::address_of(sender);
-        let collection_creator = get_config_signer();
-        let token_royalty = option::some(royalty::create(15, 100, sender_addr));
-        let nft_constructor_ref = token::create_numbered_token(
-            &collection_creator,
-            string::utf8(NAME),
-            string::utf8(DESCRIPTION),
-            string::utf8(b"abc"),
-            string::utf8(b"def"),
-            token_royalty,
-            string::utf8(URI),
-        );
-
-        let nft_signer = object::generate_signer(&nft_constructor_ref);
-        let nft_transfer_ref = object::generate_transfer_ref(&nft_constructor_ref);
-
-        let nft_data = NftData { msg: string::utf8(b"Hello, World!") };
-        move_to(&nft_signer, nft_data);
-
-        let sender_addr = signer::address_of(sender);
-        object::transfer_with_ref(object::generate_linear_transfer_ref(&nft_transfer_ref), sender_addr);
-
-        signer::address_of(&nft_signer)
     }
 
     public entry fun transfer_by_nft_token(sender: &signer, nft_addr: address, recipient_addr: address) {
@@ -81,6 +57,8 @@ module playground_addr::nft_playground {
         let nft_data_obj = object::address_to_object<NftData>(nft_addr);
         object::transfer(sender, nft_data_obj, recipient_addr);
     }
+
+    // ================================= View Functions ================================== //
 
     #[view]
     public fun get_collection_addr(): (address) {
@@ -134,6 +112,34 @@ module playground_addr::nft_playground {
         }
     }
 
+    // ================================= Helpers ================================== //
+
+    fun mint_inner(sender: &signer): address acquires Config {
+        let sender_addr = signer::address_of(sender);
+        let collection_creator = get_config_signer();
+        let token_royalty = option::some(royalty::create(15, 100, sender_addr));
+        let nft_constructor_ref = token::create_numbered_token(
+            &collection_creator,
+            string::utf8(NAME),
+            string::utf8(DESCRIPTION),
+            string::utf8(b"abc"),
+            string::utf8(b"def"),
+            token_royalty,
+            string::utf8(URI),
+        );
+
+        let nft_signer = object::generate_signer(&nft_constructor_ref);
+        let nft_transfer_ref = object::generate_transfer_ref(&nft_constructor_ref);
+
+        let nft_data = NftData { msg: string::utf8(b"Hello, World!") };
+        move_to(&nft_signer, nft_data);
+
+        let sender_addr = signer::address_of(sender);
+        object::transfer_with_ref(object::generate_linear_transfer_ref(&nft_transfer_ref), sender_addr);
+
+        signer::address_of(&nft_signer)
+    }
+
     fun get_config_signer_addr(): address {
         object::create_object_address(&@playground_addr, CONFIG_OBJ_SEED)
     }
@@ -141,6 +147,8 @@ module playground_addr::nft_playground {
     fun get_config_signer(): signer acquires Config {
         object::generate_signer_for_extending(&borrow_global<Config>(get_config_signer_addr()).extend_ref)
     }
+
+    // ================================= Tests ================================== //
 
     #[test(sender = @playground_addr, user1 = @0x100)]
     fun test_happy_path(sender: &signer, user1: &signer) acquires Config {
