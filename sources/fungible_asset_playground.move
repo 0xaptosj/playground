@@ -8,8 +8,6 @@ module playground_addr::fungible_asset_playground {
 
     const FA_OBJ_SEED: vector<u8> = b"MY_FA";
 
-    struct TestCoin has key {}
-
     struct Config has key {
         mint_ref: fungible_asset::MintRef,
         burn_ref: fungible_asset::BurnRef,
@@ -43,7 +41,6 @@ module playground_addr::fungible_asset_playground {
     public entry fun mint_fa(sender: &signer, amount: u64) acquires Config {
         let sender_addr = signer::address_of(sender);
         let fa_obj_addr = get_fa_obj_address();
-        // let config = borrow_global<Config>(@playground_addr);
         let config = borrow_global<Config>(fa_obj_addr);
         let minted_fa = fungible_asset::mint(&config.mint_ref, amount);
         primary_fungible_store::deposit(sender_addr, minted_fa);
