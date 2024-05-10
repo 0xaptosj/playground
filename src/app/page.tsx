@@ -1,7 +1,7 @@
-"use client";
-
 import { Run } from "@/components/Run";
+import { getNftMintingEvents } from "@/utils/aptos";
 
-export default function Page() {
+export default async function Page() {
+  await getNftMintingEvents();
   return <Run />;
 }

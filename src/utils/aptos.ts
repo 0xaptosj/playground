@@ -4,7 +4,7 @@ export const PLAYGROUND_CONTRACT_ADDRESS =
   "0xcff52b2cca5126a222752a9d04c680b134127b59e7a8457d940163316f1b4f60";
 
 const config = new AptosConfig({
-  network: Network.MAINNET,
+  network: Network.TESTNET,
 });
 export const aptos = new Aptos(config);
 
@@ -74,4 +74,50 @@ export const getAccountTxsCount = async () => {
     accountAddress:
       "0x30fc5066aa21bdf9d2ab60353a81601927ea2877966adea38ae821f55b976891",
   });
+};
+
+export const getStakingReward = async () =>
+  // delegatorAddr: string,
+  // poolAddress: string
+  {
+    const delegatorAddr =
+      "0x42b7cd08d63005d04c8dd0ed5e7e1acab3cf20bf77dab114ba5a2806d0b97be2";
+    const poolAddress =
+      "0x9bfd93ebaa1efd65515642942a607eeca53a0188c04c21ced646d2f0b9f551e8";
+    aptos.getDelegatedStakingActivities({
+      delegatorAddress: delegatorAddr,
+      poolAddress: poolAddress,
+    });
+
+    const [activeStake, inactiveStake, pendingInactiveStake] = await aptos.view(
+      {
+        payload: {
+          function: "0x1::delegation_pool::get_stake",
+          typeArguments: [],
+          functionArguments: [poolAddress, delegatorAddr],
+        },
+        options: {
+          ledgerVersion: 0, // last ledger version of the epoch
+        },
+      }
+    );
+  };
+
+export const getNftMintingEvents = async () => {
+  const nftCollectionAddress =
+    "0x9b716a3434409bb6c7feaf4174962b635aaf489ddc3174e8fb8c411811638f4b";
+  const events = await aptos.getEvents({
+    options: {
+      where: {
+        type: {
+          _eq: "0x4::collection::Mint",
+        },
+        data: {
+          _contains: nftCollectionAddress,
+        },
+      },
+      orderBy: [{ creation_number: "desc" }],
+    },
+  });
+  console.log("minting events", events);
 };

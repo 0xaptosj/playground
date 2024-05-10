@@ -1,3 +1,5 @@
+"use client";
+
 import {
   PLAYGROUND_CONTRACT_ADDRESS,
   aptos,
@@ -10,15 +12,15 @@ import { Button } from "@chakra-ui/react";
 
 export const Run = () => {
   const { account, signAndSubmitTransaction } = useWallet();
-  bulkResolveAnsName().then((result) => {
-    console.log(result);
-  });
-  getAccountTxs().then((result) => {
-    console.log("user tx", result.length);
-  });
-  getAccountTxsCount().then((result) => {
-    console.log("user tx count", result);
-  });
+  // bulkResolveAnsName().then((result) => {
+  //   console.log(result);
+  // });
+  // getAccountTxs().then((result) => {
+  //   console.log("user tx", result.length);
+  // });
+  // getAccountTxsCount().then((result) => {
+  //   console.log("user tx count", result);
+  // });
 
   const onSubmit = async () => {
     if (!account) {
