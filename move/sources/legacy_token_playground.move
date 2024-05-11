@@ -3,14 +3,15 @@ module playground_addr::legacy_token_playground {
     use aptos_token::token;
 
     fun init_module(sender: &signer) {
-        token::create_collection_script(
-            sender,
-            string::utf8(b"name"),
-            string::utf8(b"description"),
-            string::utf8(b"uri"),
-            123,
-            vector[true, true, true]
-        )
+        // this code is broken!!!
+        // token::create_collection_script(
+        //     sender,
+        //     string::utf8(b"name"),
+        //     string::utf8(b"description"),
+        //     string::utf8(b"uri"),
+        //     123,
+        //     vector[true, true, true]
+        // )
     }
 
     // ================================= Tests ================================== //

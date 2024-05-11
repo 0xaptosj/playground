@@ -26,13 +26,6 @@ module playground_addr::playground_1 {
     #[test]
     fun test_convert_u64_to_string() {
         let converted = convert_u64_to_string(123);
-        delegation_pool::get_stake()
-
         assert!(converted == string::utf8(b"123"), 1);
-
-    }
-
-    #[view]
-    fun get_staking_reward(delegator_addr: address): u64 {
     }
 }
