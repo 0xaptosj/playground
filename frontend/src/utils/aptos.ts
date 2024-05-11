@@ -106,17 +106,22 @@ export const getStakingReward = async () =>
 export const getNftMintingEvents = async () => {
   const nftCollectionAddress =
     "0x9b716a3434409bb6c7feaf4174962b635aaf489ddc3174e8fb8c411811638f4b";
-  const events = await aptos.getEvents({
-    options: {
-      where: {
-        type: {
-          _eq: "0x4::collection::Mint",
-        },
-        data: {
-          _contains: nftCollectionAddress,
-        },
-      },
-      orderBy: [{ creation_number: "desc" }],
+  const events = await aptos.queryIndexer({
+    query: {
+      query: `
+query MyQuery {
+  token_activities_v2(
+    limit: 10
+    where: {current_token_data: {collection_id: {_eq: "${nftCollectionAddress}"}}, type: {_eq: "0x4::collection::MintEvent"}}
+  ) {
+    type
+    transaction_version
+    token_amount
+    from_address
+    to_address
+  }
+}
+`,
     },
   });
   console.log("minting events", events);
